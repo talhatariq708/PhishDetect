@@ -1,0 +1,19 @@
+
+---
+
+### **🌐 Manual GitHub Upload**
+1. Go to your repo: `https://github.com/yourusername/PhishDetect`
+2. Click **"Add file" → "Upload files"**
+3. Drag and drop **all files and folders** (except virtualenv files).
+4. Commit with message: `"Initial release: Core phishing detection tool"`.
+
+---
+
+### **🔍 Verify Your Upload**
+After uploading, run this to test cloning:  
+```bash
+git clone https://github.com/talhatariq708/PhishDetect.git
+cd PhishDetect
+pip3 install -r requirements.txt
+chmod +x phishdetect.sh
+python3 app.py or bash phishdetect.sh

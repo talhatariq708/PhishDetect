@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PhishDetect</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 PhishDetect</h1>
+        <input type="text" id="url" placeholder="https://example.com">
+        <button onclick="checkUrl()">Scan URL</button>
+        <div id="result">
+            <div id="loading" style="display:none;">Scanning...</div>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script>
+        async function checkUrl() {
+            const url = document.getElementById("url").value;
+            const outputDiv = document.getElementById("output");
+            const loadingDiv = document.getElementById("loading");
+            
+            loadingDiv.style.display = "block";
+            outputDiv.innerHTML = "";
+            
+            try {
+                const response = await fetch("/scan", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url: url })
+                });
+                
+                const data = await response.json();
+                
+                let html = `
+                    <p><strong>URL:</strong> ${data.url}</p>
+                    <p><strong>Domain Age:</strong> ${data.domain_age}</p>
+                    <p><strong>Risk Score:</strong> ${data.risk_score}/100</p>
+                `;
+                
+                if (data.warnings && data.warnings.length > 0) {
+                    html += `<p><strong>Warnings:</strong><ul>`;
+                    data.warnings.forEach(w => html += `<li>${w}</li>`);
+                    html += `</ul></p>`;
+                }
+                
+                html += `<p class="verdict ${data.is_phishing ? 'danger' : 'safe'}">
+                    ${data.is_phishing ? '⚠️ Likely Phishing!' : '✅ Likely Safe'}
+                </p>`;
+                
+                outputDiv.innerHTML = html;
+                
+            } catch (error) {
+                outputDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            } finally {
+                loadingDiv.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
