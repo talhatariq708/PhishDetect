@@ -1,7 +1,7 @@
 # 🔍 PhishDetect  
 *Detect phishing URLs with Python, Flask, and threat intelligence APIs.*
 
-![Demo Screenshot](/static/project.png)
+![Demo Screenshot](/static/Project.png)
 
 ## 🚀 Features
 - Domain age analysis
